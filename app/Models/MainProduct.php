@@ -76,6 +76,9 @@ class MainProduct extends Model
     public function cart(){
       return $this->hasMany('App\Models\Tag','tagId', 'id');
     }
+    public function variationproducts () {
+      return $this->hasMany('App\Models\Product', 'mproductId', 'id')->where('isAvailable',1)->where('is_archived',0)->with('purchasestock')->with('sellstock')->with('productImages');
+    }
     public function wishlist(){
       return $this->hasOne('App\Models\Wishlist','productId', 'id');
     }

@@ -17,20 +17,26 @@ class ProductDetailsController extends Controller
 {
     public function productDetails(Request $request, $id){
         $data = $request->all();
-        $userId = $data['userId'];
-        if($data['userId']){
-            $data = MainProduct::where('slug',$id)->with('category','brand','productImages','review.users','productVariation.values', 'averageRating')->with('wishlist',function($query) use ($data){
-                $query->where('userId',$data['userId']);
+        // $userId =null;
+        // $userId = Auth::user()->id;
+        if(Auth::user()){
+            $data = MainProduct::where('slug',$id)->with('category','brand','productImages','review.users','productVariation.values', 'averageRating','variationproducts')->with('wishlist',function($query) use ($data){
+                $query->where('userId',Auth::user()->id);
             })->first();
 
         }else{
-            $data = MainProduct::where('slug',$id)->with('category','brand','productImages','review.users','productVariation.values', 'averageRating')->first();
+            $data = MainProduct::where('slug',$id)->with('category','brand','productImages','review.users','productVariation.values', 'averageRating','variationproducts')->first();
         }
         // $product = ProductVariation::where('mproductId',$data['id'])->with('values')->get();
         $relatedProduct=MainProduct::where('categoryId',$data['categoryId'])->where('id','!=',$data['id'])->limit(10)->get();
         // $trendingOffers = MainProduct::where('isNew', 1)->where('isHotDeal', 1)->where('is_archived',0)->limit(4)->get();
-
         $formattedData = [];
+        $allVariationProduct = $data->variationproducts;
+        unset($data['variationproducts']);
+
+        foreach($allVariationProduct as $product){
+            $product['variation'] = json_encode($product['variation']);
+        }
 
         unset($data['averageBuyingPrice']);
         unset($data['unit']);
@@ -51,6 +57,7 @@ class ProductDetailsController extends Controller
             'success'=> true,
             'data'=>$formattedData,
             'relatedProduct'=>$relatedProduct,
+            'variationproducts'=> $allVariationProduct
             // 'trending'=>$trendingOffers
 
         ],200);
