@@ -12,7 +12,7 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\AuctionController;
 
 
 /*
@@ -40,6 +40,9 @@ Route::get('/app/auth_user', [AuthController::class, 'authUser'])->middleware('j
 Route::prefix('/app')->group(function(){
     // Route::get('/auth_user', [AuthController::class, 'authUser']);
     //Landing page
+
+    Route::get('/auction', [AuctionController::class, 'checkIsWorking']);
+    
     Route::get('/landing_page/banners', [HomeController::class, 'getBanner']);
     Route::get('/landing_page/hotdeals', [HomeController::class, 'getHotDeals']);
     Route::get('/landing_page/categories', [HomeController::class, 'getLandingPageCategories']);
@@ -104,14 +107,23 @@ Route::prefix('/app')->group(function(){
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/logout', [AuthController::class, 'logout']);
 
+    Route::get('/auctions', 'AuctionController@index');
+    Route::get('/auctions/create', 'AuctionController@create');
+    Route::post('/auctions', 'AuctionController@store');
+    Route::get('/auctions/{id}', 'AuctionController@show');
+    Route::get('/auctions/{id}/edit', 'AuctionController@edit');
+    Route::put('/auctions/{id}', 'AuctionController@update');
+    Route::delete('/auctions/{id}', 'AuctionController@destroy');
+
+
+    Route::get('/auctions', function () {
+        $auctions = Auction::all();
+    
+        return response()->json($auctions);
+    });
+
 });
 
 //Auction
 
-Route::get('/auctions', 'AuctionController@index');
-Route::get('/auctions/create', 'AuctionController@create');
-Route::post('/auctions', 'AuctionController@store');
-Route::get('/auctions/{id}', 'AuctionController@show');
-Route::get('/auctions/{id}/edit', 'AuctionController@edit');
-Route::put('/auctions/{id}', 'AuctionController@update');
-Route::delete('/auctions/{id}', 'AuctionController@destroy');
+

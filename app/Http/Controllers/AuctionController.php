@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Auction;
+// use App\Auction;
+use App\Models\Auction;
+
 
 class AuctionController extends Controller
 {
@@ -17,7 +19,15 @@ class AuctionController extends Controller
         $auctions = Auction::all();
         return view('auctions.index', compact('auctions'));
     }
-
+    public function checkIsWorking()
+    {
+        $data = Auction::get();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ], 200);
+    }
     /**
      * Show the form for creating a new resource.
      *
