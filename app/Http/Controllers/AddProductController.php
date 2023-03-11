@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Category;
 use App\Models\MainProduct;
+use App\Models\Product;
 use App\Models\Image;
 
 use Validator;
@@ -69,16 +70,39 @@ class AddProductController extends Controller
 
     public function store(Request $request){
         $data = MainProduct::create($request->all());
+         Product::create([
+            'mproductId' => $data->id,
+            'menuId' => $request->menuId,
+            'productName' => $request->productName,
+            'groupId' => $request->groupId,
+            'categoryId' => $request->categoryId,
+            'brandId' => $request->brandId,
+            'sellingPrice' => $request->sellingPrice,
+            'model' =>  $request->model,
+            'unit' =>  $request->unit,
+            'menuId' =>  $request->menuId,
+            'variation' => 'variation',
+            'date' => now(),
+        ]);
         return response()->json([
             'success'=> true,
             'data'=>$data,
         ],201);
     }
     public function index(Request $request){
-        $data = MainProduct::with('group', 'category')->limit($request->limit)->get();
+        $data = MainProduct::with('group', 'category')->limit($request->limit)->orderBy('id', 'desc')->get();
         return response()->json([
             'success'=> true,
             'data'=>$data,
         ],200);
+    }
+    
+    public function destroy($id){
+        $data = MainProduct::where('id', $id)->delete();
+        $data = Product::where('mproductId', $id)->delete();
+        return response()->json([
+            'success'=> true,
+            'data'=>$data,
+        ],201);
     }
 }

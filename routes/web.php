@@ -61,12 +61,12 @@ Route::prefix('/app')->group(function(){
     Route::post('/wishList',[HomeController::class,'addWishList']);
 
     // Model Product
-    // Route::get('/all_main_product',[MainProductController::class,'allMainProducts']);
-    // Route::get('/main_product/{id}',[MainProductController::class,'show']);
-    // Route::post('/updateProductImages',[MainProductController::class,'updateProductImages']);
-    // Route::post('/main_productupdate/{id}',[MainProductController::class,'updateIsNewProduct']);
-    // Route::post('/main_product/{id}',[MainProductController::class,'update']);
-    // Route::post('/main_product/{id}',[MainProductController::class,'destroy']);
+    // Route::get('/all_main_product',[AddProductController::class,'allMainProducts']);
+    // Route::get('/main_product/{id}',[AddProductController::class,'show']);
+    // Route::post('/updateProductImages',[AddProductController::class,'updateProductImages']);
+    // Route::post('/main_productupdate/{id}',[AddProductController::class,'updateIsNewProduct']);
+    // Route::post('/main_product/{id}',[AddProductController::class,'update']);
+    // Route::post('/main_product/{id}',[AddProductController::class,'destroy']);
 
     Route::get('/group',[AddProductController::class,'getGroup']);
     Route::get('/category',[AddProductController::class,'getCategory']);
@@ -74,6 +74,7 @@ Route::prefix('/app')->group(function(){
     Route::post('/delete_image', [AddProductController::class, 'deleteImage']);
     Route::post('/main_product',[AddProductController::class,'store']);
     Route::get('/main_product',[AddProductController::class,'index']);
+    Route::post('/main_product/{id}',[AddProductController::class,'destroy']);
 
 
     //For Reset password

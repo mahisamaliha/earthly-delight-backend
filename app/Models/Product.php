@@ -8,7 +8,7 @@ class Product extends Model
 {
 	protected $fillable = [
         'menuId','productName','groupName','catName','brand','unit' , 'sellingPrice', 'barCode' ,'opening',
-        'groupId','categoryId','brandId','mproductId','openingQuantity','openingUnitPrice','stock','model','variation','is_archived'
+        'groupId','categoryId','brandId','mproductId','openingQuantity','openingUnitPrice','stock','model','variation','is_archived', 'date'
     ];
     public function mainproduct(){
        return $this->belongsTo('App\Models\MainProduct','mproductId','id');
