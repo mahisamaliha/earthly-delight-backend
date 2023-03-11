@@ -140,6 +140,12 @@ Route::prefix('/app')->group(function(){
         return response()->json($auctions);
     });
 
+    Route::get('/accesories', function () {
+        $auctions = Accesorie::all();
+    
+        return response()->json($accesories);
+    });
+
 });
 
 //Auction
