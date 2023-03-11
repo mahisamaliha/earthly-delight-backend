@@ -5,8 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Cviebrock\EloquentSluggable\Sluggable;
+
 class MainProduct extends Model
 {
+    use Sluggable;
     protected $fillable = [
         'slug',
         'menuId',
@@ -37,7 +40,14 @@ class MainProduct extends Model
         'is_archived',
 
     ];
-
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'productName'
+            ]
+        ];
+    }
     // public function productImages(){
     //     return $this->hasMany('App\Models\ProductImage','productId');
     // }
