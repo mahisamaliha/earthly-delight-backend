@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Auction extends Model
 {
-    use HasFactory;
+    protected $table = 'auctions';
 }

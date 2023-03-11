@@ -18,4 +18,8 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::get('/auction', function() {
+    return 'api_test_working';
+});
+
 
