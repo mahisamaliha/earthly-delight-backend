@@ -14,7 +14,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddProductController;
 use App\Http\Controllers\AuctionController;
+use App\Http\Controllers\AuctionTrackingController;
 
+
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +41,31 @@ Route::get('/', function () {
 
 Route::get('/app/auth_user', [AuthController::class, 'authUser'])->middleware('jwt.verify');
 
+// Route::group(['prefix' => 'app', 'middleware' => ['auth']], function () {    
+//     Route::post('/auction-tracking', [AuctionTrackingController::class, 'store'])->name('auction_tracking.store');
+//     Route::get('/auction-tracking/{id}', [AuctionTrackingController::class, 'show'])->name('auction_tracking.show');
+//     Route::put('/auction-tracking/{id}', [AuctionTrackingController::class, 'update'])->name('auction_tracking.update');
+//     Route::delete('/auction-tracking/{id}', [AuctionTrackingController::class, 'destroy'])->name('auction_tracking.destroy');
+// });
+
 Route::prefix('/app')->group(function(){
     // Route::get('/auth_user', [AuthController::class, 'authUser']);
     //Landing page
+
+    Route::get('/get-user-id', function () {
+        if (Auth::check()) {
+            $userId = Auth::id();
+            return response()->json(['user_id' => $userId]);
+        } else {
+            return response()->json(['error' => 'User not authenticated']);
+        }
+    });
+    
+
+    Route::post('/auction-tracking', [AuctionTrackingController::class, 'store'])->name('auction_tracking.store');
+    Route::get('/auction-tracking/{user_id}/{auction_id}', [AuctionTrackingController::class, 'show'])->name('auction_tracking.show');
+    Route::put('/auction-tracking/{user_id}/{auction_id}', [AuctionTrackingController::class, 'update'])->name('auction_tracking.update');
+    Route::delete('/auction-tracking/{user_id}/{auction_id}', [AuctionTrackingController::class, 'destroy'])->name('auction_tracking.destroy');
 
     Route::get('/auction', [AuctionController::class, 'checkIsWorking']);
     
@@ -125,20 +150,15 @@ Route::prefix('/app')->group(function(){
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/auctions', 'AuctionController@index');
-    Route::get('/auctions/create', 'AuctionController@create');
-    Route::post('/auctions', 'AuctionController@store');
-    Route::get('/auctions/{id}', 'AuctionController@show');
-    Route::get('/auctions/{id}/edit', 'AuctionController@edit');
-    Route::put('/auctions/{id}', 'AuctionController@update');
-    Route::delete('/auctions/{id}', 'AuctionController@destroy');
+    // Route::get('/auctions', 'AuctionController@index');
+    // Route::get('/auctions/create', 'AuctionController@create');
+    // Route::post('/auctions', 'AuctionController@store');
+    // Route::get('/auctions/{id}', 'AuctionController@show');
+    // Route::get('/auctions/{id}/edit', 'AuctionController@edit');
+    // Route::put('/auctions/{id}', 'AuctionController@update');
+    // Route::delete('/auctions/{id}', 'AuctionController@destroy');
 
-
-    Route::get('/auctions', function () {
-        $auctions = Auction::all();
-    
-        return response()->json($auctions);
-    });
+    Route::resource('auction-trackings', AuctionTrackingController::class);
 
     Route::get('/accesories', function () {
         $auctions = Accesorie::all();
