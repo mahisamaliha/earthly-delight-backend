@@ -178,7 +178,7 @@ class OrderController extends Controller
             'paidAmount'=> $paidAmdount,
             'coupon'=> $data['coupon'],
             'cashPaid'=> $paidAmdount,
-            'customer_id' => $customer_id['id'],
+            'customer_id' => "3",
             'date' => $this->datefixed($order->created_at),
             'discount' => $order->discount,
             'homeDeliveryAmount' => $order->shippingPrice,
