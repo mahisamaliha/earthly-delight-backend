@@ -103,6 +103,7 @@ Route::prefix('/app')->group(function(){
     Route::post('/upload',[AddProductController::class,'upload']);
     Route::post('/delete_image', [AddProductController::class, 'deleteImage']);
     Route::post('/main_product',[AddProductController::class,'store']);
+    Route::post('/main_product_update',[AddProductController::class,'update']);
     Route::get('/main_product',[AddProductController::class,'index']);
     Route::post('/main_product/{id}',[AddProductController::class,'destroy']);
 

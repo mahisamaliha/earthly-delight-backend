@@ -89,6 +89,43 @@ class AddProductController extends Controller
             'data'=>$data,
         ],201);
     }
+    public function update(Request $request){
+        $data = MainProduct::where('id',$request->id)->update([
+            'menuId' => $request->menuId,
+            'productName' => $request->productName,
+            'groupId' => $request->groupId,
+            'categoryId' => $request->categoryId,
+            'brandId' => $request->brandId,
+            'sellingPrice' => $request->sellingPrice,
+            'model' =>  $request->model,
+            'unit' =>  $request->unit,
+            'discount' => $request->discount,
+            'productImage' => $request->productImage,
+            'adminDiscount' => $request->adminDiscount,
+            'appDiscount' => $request->appDiscount,
+            'openingQuantity' => $request->openingQuantity,
+            'openingUnitPrice' => $request->openingUnitPrice,
+            'brief_description' => $request->brief_description,
+            'description' => $request->description,
+            'stock' => $request->stock,
+            'averageBuyingPrice' => $request->averageBuyingPrice,
+        ]);
+         Product::where('id',$request->mproductId)->update([
+            'menuId' => $request->menuId,
+            'productName' => $request->productName,
+            'groupId' => $request->groupId,
+            'categoryId' => $request->categoryId,
+            'brandId' => $request->brandId,
+            'sellingPrice' => $request->sellingPrice,
+            'model' =>  $request->model,
+            'unit' =>  $request->unit,
+            'variation' => 'variation',
+        ]);
+        return response()->json([
+            'success'=> true,
+            'data'=>$data,
+        ],201);
+    }
     public function index(Request $request){
         $data = MainProduct::with('group', 'category')->limit($request->limit)->orderBy('id', 'desc')->get();
         return response()->json([
